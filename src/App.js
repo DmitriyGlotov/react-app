@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 import './App.css';
 
-
-
 const App = () => {
-  const [input, setInput] = useState('');
+  const [valueInput, setValueInput] = useState('');
   const [tasks, setTasks] = useState([]);
 
   const inputOnChange = (e) => {
-    setInput(e.target.value);
+    setValueInput(e.target.value);
   }
-
 
   const onClickAdd = () => {
     tasks.push({
-      text: input,
+      text: valueInput,
     });
 
     setTasks([...tasks]);
@@ -24,7 +21,13 @@ const App = () => {
   return (
     <div className="main">
       <div className="container-input">
-        <input type="text" className="add-input" placeholder="type to add" onChange={(e) => inputOnChange(e)} value={input} />
+        <input
+          type="text"
+          className="add-input"
+          placeholder="type to add"
+          onChange={(e) => inputOnChange(e)}
+          value={input}
+        />
         <button onClick={() => onClickAdd()}>Add</button>
       </div>
       <div className="tasks">
