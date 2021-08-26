@@ -1,21 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 
 const App = () => {
-  const [valueInput, setValueInput] = useState('');
   const [tasks, setTasks] = useState([]);
+  const [textInput, setTextInput] = useState('');
 
-  const inputOnChange = (e) => {
-    setValueInput(e.target.value);
-  }
+  useEffect(() => {
+    axios.get('http://localhost:8000/allTasks').then(res => {
+      setTasks(res.data.data);
+    });
+  }, [setTasks])
 
   const onClickAdd = () => {
-    tasks.push({
-      text: valueInput,
+    axios.post('http://localhost:8000/createTask', {
+      text: textInput,
+      isCheck: false,
+    }).then(res => {
+      setTasks(res.data.data);
     });
 
-    setTasks([...tasks]);
-    setInput('');
+    setTextInput('');
+  }
+
+  const changeCheckBox = (index) => {
+    const { _id, isCheck } = tasks[index];
+
+    axios.patch('http://localhost:8000/updateTask', { _id, isCheck: !isCheck }).then(res => {
+      setTasks(res.data.data);
+    });
+  }
+  const onClickDell = (index) => {
+    axios.delete(`http://localhost:8000/deleteTask?_id=${tasks[index]._id}`).then(res => {
+      setTasks(res.data.data);
+    });
   }
 
   return (
@@ -25,23 +43,26 @@ const App = () => {
           type="text"
           className="add-input"
           placeholder="type to add"
-          onChange={(e) => inputOnChange(e)}
-          value={input}
+          onChange={(e) => setTextInput(e.target.value)}
+          value={textInput}
         />
         <button onClick={() => onClickAdd()}>Add</button>
       </div>
       <div className="tasks">
       {
-        tasks.map((item, index) => {
-          return (
-            <div key={`task-${index}`} className="task">
-              <input type="checkBox" className="checkBox"/>
-              <p className="text">{item.text}</p>
-              <button className="but-task">Edit</button>
-              <button className="but-task">Delete</button>
-            </div>
-          )
-        })
+        tasks.map((item, index) =>
+          <div key={`task-${index}`} className="task">
+            <input
+              type="checkBox"
+              className="checkBox"
+              defaultChecked={item.isCheck}
+              onClick={() => changeCheckBox(index)}
+            />
+            <p className={!item.isCheck ? "text" : "text-done"}>{item.text}</p>
+            <button className="but-task">Edit</button>
+            <button className="but-task" onClick={() => onClickDell(index)}>Delete</button>
+          </div>
+        )
       }
       </div>
     </div>
