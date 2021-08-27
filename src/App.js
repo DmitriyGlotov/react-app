@@ -24,7 +24,7 @@ const App = () => {
   }
 
   const changeCheckBox = (index) => {
-    const { _id, isCheck} = tasks[index]
+    const { _id, isCheck } = tasks[index];
 
     axios.patch('http://localhost:8000/updateTask', { _id, isCheck: !isCheck }).then(res => {
       setTasks(res.data.data);
