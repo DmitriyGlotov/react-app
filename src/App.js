@@ -5,6 +5,8 @@ import './App.css';
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [textInput, setTextInput] = useState('');
+  const [flagEdit, setFlagEdit] = useState('');
+  const [inputEdit, setInputEdit] = useState('');
 
   useEffect(() => {
     axios.get('http://localhost:8000/allTasks').then(res => {
@@ -13,6 +15,10 @@ const App = () => {
   }, [setTasks])
 
   const onClickAdd = () => {
+    if (!textInput.trim()){
+      setTextInput('');
+      return alert('ERROR');
+    }
     axios.post('http://localhost:8000/createTask', {
       text: textInput,
       isCheck: false,
@@ -34,6 +40,21 @@ const App = () => {
     axios.delete(`http://localhost:8000/deleteTask?_id=${_id}`).then(res => {
       setTasks(res.data.data);
     });
+  }
+
+  const onClickEdit = (index) => {
+    if (!inputEdit.trim()){
+      setInputEdit('');
+      return alert('ERROR');
+    }
+    const { _id } = tasks[index];
+
+    axios.patch('http://localhost:8000/updateTask', { _id, text: inputEdit }).then(res => {
+      setTasks(res.data.data);
+    });
+
+    setInputEdit('');
+    setFlagEdit('');
   }
 
   return (
@@ -58,9 +79,18 @@ const App = () => {
               checked={item.isCheck}
               onChange={() => changeCheckBox(index)}
             />
-            <p className={!item.isCheck ? "text" : "text-done"}>{item.text}</p>
-            <button className="but-task">Edit</button>
-            <button className="but-task" onClick={() => onClickDell(item._id)}>Delete</button>
+            {flagEdit !== index
+              ? <>
+                <p className={!item.isCheck ? "text" : "text-done"}>{item.text}</p>
+                <button className="but-task" onClick={() => setFlagEdit(index)}>Edit</button>
+                <button className="but-task" onClick={() => onClickDell(item._id)}>Delete</button>
+                </>
+              : <>
+                <input type="text" className="edit-input"  onChange={(e) => setInputEdit(e.target.value)}/>
+                <button className="but-task" onClick={() => (onClickEdit(index))}>Done</button>
+                <button className="but-task" onClick={() => setFlagEdit('')}>Cancel</button>
+                </>
+            }
           </div>
         )
       }
