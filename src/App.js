@@ -24,14 +24,14 @@ const App = () => {
   }
 
   const changeCheckBox = (index) => {
-    const { _id, isCheck } = tasks[index];
+    const { _id, isCheck} = tasks[index]
 
     axios.patch('http://localhost:8000/updateTask', { _id, isCheck: !isCheck }).then(res => {
       setTasks(res.data.data);
     });
   }
-  const onClickDell = (index) => {
-    axios.delete(`http://localhost:8000/deleteTask?_id=${tasks[index]._id}`).then(res => {
+  const onClickDell = (_id) => {
+    axios.delete(`http://localhost:8000/deleteTask?_id=${_id}`).then(res => {
       setTasks(res.data.data);
     });
   }
@@ -55,12 +55,12 @@ const App = () => {
             <input
               type="checkBox"
               className="checkBox"
-              defaultChecked={item.isCheck}
-              onClick={() => changeCheckBox(index)}
+              checked={item.isCheck}
+              onChange={() => changeCheckBox(index)}
             />
             <p className={!item.isCheck ? "text" : "text-done"}>{item.text}</p>
             <button className="but-task">Edit</button>
-            <button className="but-task" onClick={() => onClickDell(index)}>Delete</button>
+            <button className="but-task" onClick={() => onClickDell(item._id)}>Delete</button>
           </div>
         )
       }
