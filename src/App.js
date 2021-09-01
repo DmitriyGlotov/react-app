@@ -15,10 +15,7 @@ const App = () => {
   }, [setTasks])
 
   const onClickAdd = () => {
-    if (!textInput.trim()){
-      setTextInput('');
-      return alert('ERROR');
-    }
+    if (!textInput.trim()) return alert('ERROR');
     axios.post('http://localhost:8000/createTask', {
       text: textInput,
       isCheck: false,
@@ -43,10 +40,7 @@ const App = () => {
   }
 
   const onClickEdit = (index) => {
-    if (!inputEdit.trim()){
-      setInputEdit('');
-      return alert('ERROR');
-    }
+    if (!inputEdit.trim()) return alert('ERROR');
     const { _id } = tasks[index];
 
     axios.patch('http://localhost:8000/updateTask', { _id, text: inputEdit }).then(res => {
@@ -81,14 +75,14 @@ const App = () => {
             />
             {flagEdit !== index
               ? <>
-                <p className={!item.isCheck ? "text" : "text-done"}>{item.text}</p>
-                <button className="but-task" onClick={() => setFlagEdit(index)}>Edit</button>
-                <button className="but-task" onClick={() => onClickDell(item._id)}>Delete</button>
+                  <p className={!item.isCheck ? "text" : "text-done"}>{item.text}</p>
+                  <button className="but-task" onClick={() => setFlagEdit(index)}>Edit</button>
+                  <button className="but-task" onClick={() => onClickDell(item._id)}>Delete</button>
                 </>
               : <>
-                <input type="text" className="edit-input"  onChange={(e) => setInputEdit(e.target.value)}/>
-                <button className="but-task" onClick={() => (onClickEdit(index))}>Done</button>
-                <button className="but-task" onClick={() => setFlagEdit('')}>Cancel</button>
+                  <input type="text" className="edit-input"  value={inputEdit} onChange={(e) => setInputEdit(e.target.value)}/>
+                  <button className="but-task" onClick={() => onClickEdit(index)}>Done</button>
+                  <button className="but-task" onClick={() => setFlagEdit('')}>Cancel</button>
                 </>
             }
           </div>
