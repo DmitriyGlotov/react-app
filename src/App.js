@@ -79,18 +79,16 @@ const App = () => {
       {
         tasks.map((item, index) =>
           <div key={`task-${index}`} className="task">
-            <input
+            {flagEdit !== index && <input
               type="checkBox"
               className="checkBox"
               checked={item.isCheck}
               onChange={() => changeCheckBox(index)}
-            />
+            />}
             {flagEdit !== index
               ? <>
-                  <p className={`text  ${item.isCheck ? "text-done" : ""}`}>{item.text}</p>
-                  {!item.isCheck
-                    ? <img src={edit} alt='' className="img-but" onClick={() => clickEdit(item, index)}/>
-                    : <div />}
+                  <p className={`text ${item.isCheck ? "text-done" : ""}`}>{item.text}</p>
+                  {!item.isCheck && <img src={edit} alt='' className="img-but" onClick={() => clickEdit(item, index)}/>}
                   <img src={del} alt='' className="img-but" onClick={() => onClickDell(item._id)} />
                 </>
               : <>
