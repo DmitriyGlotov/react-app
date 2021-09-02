@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './App.css';
+import add from './images/add.png';
+import edit from './images/edit.png';
+import del from './images/Del.png';
+import cancel from './images/cancel.png';
+import done from './images/done.png';
+import './App.scss';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [textInput, setTextInput] = useState('');
   const [flagEdit, setFlagEdit] = useState('');
   const [inputEdit, setInputEdit] = useState('');
+  tasks.sort((a, b) => a.isCheck - b.isCheck);
 
   useEffect(() => {
     axios.get('http://localhost:8000/allTasks').then(res => {
@@ -33,13 +39,19 @@ const App = () => {
       setTasks(res.data.data);
     });
   }
+
+  const clickEdit = (item, index) => {
+    setFlagEdit(index);
+    setInputEdit(item.text);
+  }
+
   const onClickDell = (_id) => {
     axios.delete(`http://localhost:8000/deleteTask?_id=${_id}`).then(res => {
       setTasks(res.data.data);
     });
   }
 
-  const onClickEdit = (index) => {
+  const onClickDone = (index) => {
     if (!inputEdit.trim()) return alert('ERROR');
     const { _id } = tasks[index];
 
@@ -57,32 +69,32 @@ const App = () => {
         <input
           type="text"
           className="add-input"
-          placeholder="type to add"
+          placeholder="add task"
           onChange={(e) => setTextInput(e.target.value)}
           value={textInput}
         />
-        <button onClick={() => onClickAdd()}>Add</button>
+        <img src={add} alt='' className="img-add" onClick={() => onClickAdd()} />
       </div>
       <div className="tasks">
       {
         tasks.map((item, index) =>
           <div key={`task-${index}`} className="task">
-            <input
+            {flagEdit !== index && <input
               type="checkBox"
               className="checkBox"
               checked={item.isCheck}
               onChange={() => changeCheckBox(index)}
-            />
+            />}
             {flagEdit !== index
               ? <>
-                  <p className={!item.isCheck ? "text" : "text-done"}>{item.text}</p>
-                  <button className="but-task" onClick={() => setFlagEdit(index)}>Edit</button>
-                  <button className="but-task" onClick={() => onClickDell(item._id)}>Delete</button>
+                  <p className={`text ${item.isCheck ? "text-done" : ""}`}>{item.text}</p>
+                  {!item.isCheck && <img src={edit} alt='' className="img-but" onClick={() => clickEdit(item, index)}/>}
+                  <img src={del} alt='' className="img-but" onClick={() => onClickDell(item._id)} />
                 </>
               : <>
                   <input type="text" className="edit-input"  value={inputEdit} onChange={(e) => setInputEdit(e.target.value)}/>
-                  <button className="but-task" onClick={() => onClickEdit(index)}>Done</button>
-                  <button className="but-task" onClick={() => setFlagEdit('')}>Cancel</button>
+                  <img src={done} alt='' className="img-but" onClick={() => onClickDone(index)}/>
+                  <img src={cancel} alt='' className="img-but" onClick={() => setFlagEdit('')}/>
                 </>
             }
           </div>

@@ -1,0 +1,103 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+}
+
+.container-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 55%;
+  padding: 5%;
+  border: solid 5px;
+  border-radius: 30px;
+  border-color: tan;
+  background-color: bisque;
+}
+
+.add-input {
+  height: 30px;
+  width: 74%;
+  font-size: 20px;
+  outline: none;
+  border-radius: 8px;
+  border-color: blanchedalmond;
+}
+
+.img-add {
+  width: 50px;
+  height: 50px;
+}
+
+.img-add:hover {
+  cursor: pointer;
+  -webkit-filter: drop-shadow(3px 5px 5px #000);
+  filter: drop-shadow(3px 5px 5px #000);
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  height: 700px;
+  margin-top: 20px;
+  padding: 0 3%;
+  border: solid 5px;
+  border-radius: 30px;
+  border-color: tan;
+  background-color: bisque;
+  overflow: overlay;
+}
+
+::-webkit-scrollbar {
+  opacity: 0;
+}
+
+.task {
+  margin-top: 4%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.text {
+  width: 60%;
+  font-size: 20px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text:hover {
+  white-space: pre-wrap;
+}
+
+.text-done {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.img-but {
+  width: 40px;
+  height: 40px;
+}
+
+.img-but:hover {
+  cursor: pointer;
+  -webkit-filter: drop-shadow(3px 5px 5px #000);
+  filter: drop-shadow(3px 5px 5px #000);
+}
+
+.edit-input {
+  width: 60%;
+  height: 30px;
+  font-size: 20px;
+  outline: none;
+  border-radius: 8px;
+  border-color: blanchedalmond;
+}
