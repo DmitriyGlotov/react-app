@@ -7,16 +7,15 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import axios from 'axios';
 
-const Task = ({ item, index, tasks, setTasks, setTaskText }) => {
-  let history = useHistory();
+const Task = ({ tasks, setTasks, setTaskText }) => {
+  const history = useHistory();
 
-  const editFunck = (index) => {
-    history.push(`/edit/${tasks[index]._id}`)
-    setTaskText(tasks[index].text)
+  const editFunck = (_id, text) => {
+    history.push(`/edit/${_id}`)
+    setTaskText(text)
   }
 
-  const changeCheckBox = (index) => {
-    const { _id, isCheck } = tasks[index];
+  const changeCheckBox = (_id, isCheck) => {
 
     axios.patch('http://localhost:8000/updateTask', { _id, isCheck: !isCheck }).then(res => {
       setTasks(res.data.data);
@@ -30,17 +29,23 @@ const Task = ({ item, index, tasks, setTasks, setTaskText }) => {
   }
 
   return (
-    <>
-      <Checkbox
-        icon={ <FavoriteBorder /> }
-        checkedIcon={ <Favorite /> }
-        checked={item.isCheck}
-        onChange={() => changeCheckBox(index)}
-      />
-      <p className={`text ${item.isCheck ? "text-done" : ""}`}>{item.text}</p>
-      {!item.isCheck && <img src={edit} alt='' className="img-but" onClick={() =>editFunck(index) }/>}
-      <img src={del} alt='' className="img-but" onClick={() => onClickDell(item._id)} />
-    </>
+    tasks.map((item, index) => {
+      const {text, isCheck, _id} = item;
+
+      return (
+        <div key={`task-${index}`} className="task">
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            checked={isCheck}
+            onChange={() => changeCheckBox(_id, isCheck)}
+          />
+          <p className={`text ${isCheck ? "text-done" : ""}`}>{text}</p>
+          { !item.isCheck && <img src={edit} alt='' className="img-but" onClick={() =>editFunck(_id, text) }/>}
+          <img src={del} alt='' className="img-but" onClick={() => onClickDell(_id)} />
+        </div>
+      )
+    })
   )
 }
 

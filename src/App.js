@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Switch, Route, Redirect} from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import add from './images/add.png';
 import TaskEdit from './TaskEdit';
@@ -47,19 +47,11 @@ const App = () => {
         <div className="tasks">
           <Switch>
             <Route path='/home'>
-                {
-                  tasks.map((item, index) =>
-                    <div key={`task-${index}`} className="task">
-                      <Task
-                        tasks={tasks}
-                        item={item}
-                        index={index}
-                        setTasks={setTasks}
-                        setTaskText={setTaskText}
-                      />
-                    </div>
-                  )
-                }
+              <Task
+                tasks={tasks}
+                setTasks={setTasks}
+                setTaskText={setTaskText}
+              />
             </Route>
             <Route path='/edit/:id'>
               <TaskEdit

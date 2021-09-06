@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import axios from 'axios';
 import cancel from './images/cancel.png';
@@ -20,7 +20,7 @@ const TaskEdit = ({ setTasks, taskText }) => {
 
   return (
     <div className="task">
-      <input type="text" className="edit-input"  value={inputEdit} onChange={(e) => setInputEdit(e.target.value)}/>
+      <input type="text" className="edit-input" value={inputEdit} onChange={(e) => setInputEdit(e.target.value)}/>
       <Link to='/home'><img src={done} alt='' className="img-but" onClick={() => onClickDone()}/></Link>
       <Link to='/home'><img src={cancel} alt='' className="img-but" /></Link>
     </div>
