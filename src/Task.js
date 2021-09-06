@@ -30,7 +30,7 @@ const Task = ({ tasks, setTasks, setTaskText }) => {
 
   return (
     tasks.map((item, index) => {
-      const {text, isCheck, _id} = item;
+      const { text, isCheck, _id } = item;
 
       return (
         <div key={`task-${index}`} className="task">
@@ -41,7 +41,7 @@ const Task = ({ tasks, setTasks, setTaskText }) => {
             onChange={() => changeCheckBox(_id, isCheck)}
           />
           <p className={`text ${isCheck ? "text-done" : ""}`}>{text}</p>
-          { !item.isCheck && <img src={edit} alt='' className="img-but" onClick={() =>editFunck(_id, text) }/>}
+          { !item.isCheck && <img src={edit} alt='' className="img-but" onClick={() => editFunck(_id, text) }/>}
           <img src={del} alt='' className="img-but" onClick={() => onClickDell(_id)} />
         </div>
       )
